@@ -32,6 +32,20 @@ Common issues:
 - Wrong import paths (use exact paths from tsx-contract.md)
 - Non-existent exports
 
+## TSX 자동 삭제 경고 (CRITICAL)
+
+파이프라인(`features/generate_slides/lib.py:380-391`)은 Remotion 렌더가 RuntimeError로 실패하면
+**해당 `.tsx` 파일을 즉시 삭제**한다. 폰트 404, spring config 오류 등 환경 문제가 원인이어도 삭제됨.
+
+**결과**: tsx 없음 → 다음 파이프라인 실행 시 "슬라이드 파일 없음" → cascade 실패
+
+**방어책**:
+1. 파이프라인 실행 **전** `regenerate_slides.py` pre-render로 렌더 오류를 먼저 잡는다
+2. tsx가 갑자기 사라졌다면 이전 파이프라인의 렌더 실패 흔적 — tsx를 재작성해야 함
+3. `remotion/public/fonts/` 디렉토리와 Pretendard 폰트 파일 존재 여부를 먼저 확인
+
+---
+
 ## Stale File Cleanup (CRITICAL)
 
 Before running pipeline, delete .json and .mp4 for all slides with .tsx/.py:

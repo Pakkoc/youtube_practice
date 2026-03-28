@@ -33,6 +33,7 @@ tts_pronunciation:
   CrewAI: 크루에이아이
 
   # --- 개발 도구 / SaaS ---
+  ElevenLabs: 일레븐랩스
   VS Code: 브이에스코드
   Cursor: 커서
   GitHub Actions: 깃허브 액션즈

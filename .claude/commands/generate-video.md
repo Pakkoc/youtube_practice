@@ -53,7 +53,8 @@ output/final_video.mp4
 
 ```bash
 cd $PROJECT_ROOT
-uv run python3 -c "
+# Windows Git Bash: uv가 PATH에 없으면 exit 49 발생 → .venv/Scripts/python.exe 사용
+.venv/Scripts/python.exe -c "
 from features.split_paragraphs.lib import split_script
 from features.split_scenes.lib import split_paragraphs_into_scenes
 from app.config import get_config
@@ -66,6 +67,7 @@ print(f'=== {len(script.paragraphs)}개 문단 -> {len(scenes)}개 씬 (merge_th
 for s in scenes:
     print(f'Scene {s.index:02d} (para {s.paragraph_index}): {s.text[:80]}')
 "
+# Mac/Linux: uv run python3 -c "..." 사용 가능
 ```
 
 1. 씬 개수를 간단히 출력 후 **확인 대기 없이** 다음 스텝 즉시 진행
@@ -127,16 +129,23 @@ fi
 `npx tsc --noEmit`는 타입 에러만 잡습니다. Remotion 런타임 에러(interpolate inputRange 위반, spring config 오류, 무한 리렌더 등)는 실제 렌더링을 해봐야 발견됩니다. 이 단계에서 전체 슬라이드를 MP4로 미리 렌더링하여, TTS·B-roll·아바타 등 비용이 큰 파이프라인 스텝 전에 렌더링 실패를 잡습니다.
 
 ```bash
-uv run python scripts/regenerate_slides.py $ARGUMENTS
+# Windows Git Bash
+.venv/Scripts/python.exe scripts/regenerate_slides.py $ARGUMENTS
+# Mac/Linux
+# uv run python scripts/regenerate_slides.py $ARGUMENTS
 ```
 
 1. 전체 TSX/Manim → MP4 렌더링 (Remotion 4-slot 병렬)
 2. 결과 확인: `Success: N, Failed: M`
 3. **Failed > 0이면**: 실패한 슬라이드 번호를 확인하고 TSX를 수정한 뒤 해당 슬라이드만 재렌더링
    ```bash
-   uv run python scripts/regenerate_slides.py $ARGUMENTS NNN  # 특정 슬라이드만
+   # Windows Git Bash
+   .venv/Scripts/python.exe scripts/regenerate_slides.py $ARGUMENTS NNN
    ```
 4. 전체 성공 확인 후 다음 스텝 진행
+
+> ⚠️ **CRITICAL**: 렌더 실패 시 파이프라인이 해당 tsx 파일을 자동 삭제한다(`features/generate_slides/lib.py:380-391`).
+> 따라서 이 pre-render 단계에서 실패를 잡아야 한다. 파이프라인(Step 5) 먼저 실행하면 tsx가 사라진다.
 
 > 파이프라인(Step 5)은 이미 렌더링된 MP4를 skip하므로 이 단계의 시간 비용은 파이프라인 전체에서 제로입니다.
 
@@ -155,10 +164,21 @@ uv run python scripts/regenerate_slides.py $ARGUMENTS
 
 ## Step 5: 파이프라인 실행
 
+> ⚠️ **Windows Git Bash**: 실행 전 ffmpeg PATH 설정 필수. `ffmpeg` 명령이 없으면 파이프라인 실패.
+> ```bash
+> export PATH="/c/Users/qkrtj/AppData/Local/Microsoft/WinGet/Packages/Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe/ffmpeg-8.1-full_build/bin:$PATH"
+> ```
+
 ```bash
-uv run video-automation pipeline script-to-video \
+# Windows Git Bash
+.venv/Scripts/video-automation.exe pipeline script-to-video \
   --input projects/$ARGUMENTS/script.txt \
   --project $ARGUMENTS
+
+# Mac/Linux
+# uv run video-automation pipeline script-to-video \
+#   --input projects/$ARGUMENTS/script.txt \
+#   --project $ARGUMENTS
 ```
 
 > **B-roll 기본 활성화**: `--no-broll`은 빠른 테스트 시에만.
