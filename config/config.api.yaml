@@ -1,0 +1,24 @@
+# Workshop API-Only 설정 (기본 프로필)
+pipeline:
+  tts: { backend: elevenlabs }
+  slides: { backend: remotion }
+  broll: { enabled: false, image_search: false }
+  scenes: { enabled: true, merge_threshold: 30 }
+  avatar: { enabled: false }
+environment: { platform: "auto" }
+tts:
+  force_backend: "elevenlabs"
+  speaker: "Sohee"
+  language: "Korean"
+  elevenlabs:
+    voice_id: "WzMnDIgiICcj1oXbUBO0"
+    model_id: "eleven_multilingual_v2"
+    stability: 0.85
+    similarity_boost: 0.58
+    speed: 1.0
+    output_format: "mp3_44100_192"
+    language_code: "ko"
+    api_key_env: "ELEVENLABS_API_KEY"
+validation: { enabled: true, min_match_rate: 0.8, max_retries: 3 }
+slides: { backend: remotion, width: 1920, height: 1080, font_path: "assets/fonts", context_stride: 4 }
+subtitles: { font: "Pretendard", font_size: 20, color: "white", background: "rgba(0,0,0,0.6)", position: "bottom", margin_v: 10 }

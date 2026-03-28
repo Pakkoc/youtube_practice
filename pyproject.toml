@@ -1,0 +1,106 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "video-automation"
+version = "0.1.0"
+requires-python = ">=3.13"
+description = "AI 영상 자동화 시스템 - 스크립트에서 유튜브 영상까지"
+readme = "README.md"
+
+dependencies = [
+    # Core AI
+    "anthropic>=0.77.0",
+    "openai>=2.16.0",
+    # Video Processing
+    "ffmpeg-python>=0.2.0",
+    "auto-editor>=26.0.0",
+    # Image Processing
+    "Pillow>=12.1.0",
+    # YouTube
+    "google-api-python-client>=2.160.0",
+    "google-auth-oauthlib>=1.2.0",
+    # HTTP / Config
+    "requests>=2.32.0",
+    "pyyaml>=6.0.2",
+    "pydantic>=2.10.0",
+    "python-dotenv>=1.0.1",
+    # CLI
+    "click>=8.1.0",
+    "rich>=13.9.0",
+]
+
+[project.optional-dependencies]
+tts = [
+    "qwen-tts>=0.0.5",
+    "torch>=2.10.0",
+    "soundfile>=0.13.0",
+]
+cuda = [
+    "qwen-tts>=0.0.5",
+    "torch>=2.10.0",
+    "soundfile>=0.13.0",
+    "flash-attn>=2.8.0",
+    "diffsynth>=2.0.4",
+]
+genai = [
+    "google-genai>=1.0.0",
+]
+dev = [
+    "ruff>=0.9.0",
+    "mypy>=1.14.0",
+    "pytest>=8.3.0",
+    "import-linter>=2.1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["app", "pipelines", "features", "entities", "shared"]
+
+[project.scripts]
+video-automation = "app.cli:main"
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+# camelCase props for Remotion/TypeScript interop
+"features/generate_carousel/model.py" = ["N815"]
+"features/render_shorts/model.py" = ["N815"]
+"features/render_shorts_slides/model.py" = ["N815"]
+# Manim slides: `from manim import *` required, uppercase color constants are convention
+"projects/*/slides/*.py" = ["F403", "F405", "N806", "E741"]
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+plugins = ["pydantic.mypy"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.importlinter]
+root_packages = ["app", "pipelines", "features", "entities", "shared"]
+
+[[tool.importlinter.contracts]]
+name = "FSD Layer Contract"
+type = "layers"
+layers = [
+    "app",
+    "pipelines",
+    "features",
+    "entities",
+    "shared",
+]
+
+[tool.uv.workspace]
+members = ["voice-fine-tuning"]
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true

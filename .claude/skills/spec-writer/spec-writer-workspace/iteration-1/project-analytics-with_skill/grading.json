@@ -1,0 +1,47 @@
+{
+  "eval_id": 3,
+  "eval_name": "project-analytics",
+  "configuration": "with_skill",
+  "expectations": [
+    {
+      "text": "three_files_exist - spec.md, plan.md, acceptance.md all exist in a specs/ subdirectory",
+      "passed": true,
+      "evidence": "All three files exist at specs/project-analytics/spec.md, specs/project-analytics/plan.md, specs/project-analytics/acceptance.md within the outputs/specs/ subdirectory."
+    },
+    {
+      "text": "ears_format - spec.md uses EARS patterns (keywords: WHEN, THEN, WHILE, ~해야 한다, ~하면 안 된다)",
+      "passed": true,
+      "evidence": "REQ-02: \"WHEN 사용자가 ... 실행하면, THEN 해당 프로젝트의 모든 실행 이력을 ... 출력해야 한다\"; REQ-03/REQ-04/REQ-06 also use WHEN/THEN. Korean EARS: \"자동 기록해야 한다\" (REQ-01), \"중단시키면 안 된다\" (REQ-N01), \"사용하면 안 된다\" (REQ-N02), \"주면 안 된다\" (REQ-N03). WHILE keyword not present but not required since multiple other EARS patterns are used."
+    },
+    {
+      "text": "requirement_ids - spec.md has structured requirement IDs (REQ-01, REQ-N01, REQ-O01, etc.)",
+      "passed": true,
+      "evidence": "Core: REQ-01 through REQ-06; Negative/prohibition: REQ-N01, REQ-N02, REQ-N03; Optional: REQ-O01, REQ-O02, REQ-O03. All three ID prefixes present with sequential numbering."
+    },
+    {
+      "text": "fsd_layer_mapping - spec.md has a table mapping affected FSD layers/slices",
+      "passed": true,
+      "evidence": "Section '## FSD 레이어 매핑' contains a markdown table with columns 레이어/슬라이스/변경 유형/설명, mapping shared/db/ (신규), entities/analytics/ (신규), features/track_analytics/ (신규), app/cli.py (수정), pipelines/ (수정)."
+    },
+    {
+      "text": "risk_tagging - plan.md has LOW/MEDIUM/HIGH risk classification on tasks",
+      "passed": true,
+      "evidence": "Task table (작업 분해) has '위험도' column with tasks 1-7,9-13 marked LOW and tasks 8 marked MEDIUM. Separate '위험 분석' table also uses MEDIUM and LOW impact ratings. Note: HIGH risk is not present, but the classification system using LOW/MEDIUM is clearly applied."
+    },
+    {
+      "text": "gwt_scenarios - acceptance.md has at least 2 Given/When/Then scenarios",
+      "passed": true,
+      "evidence": "acceptance.md contains 14 Given/When/Then scenarios across REQ-01 (4 scenarios), REQ-02 (2 scenarios), REQ-03 (2 scenarios), REQ-04 (1 scenario), REQ-05 (1 scenario), REQ-06 (2 scenarios), REQ-N01 (2 scenarios). Each uses explicit Given/When/Then markers."
+    },
+    {
+      "text": "quality_gates - acceptance.md includes lint/test/FSD verification checklist",
+      "passed": true,
+      "evidence": "Section '## 품질 게이트' contains checklist items: ruff check, ruff format --check, mypy type check on specific paths, lint-imports FSD rule check, pytest on specific test files, in-memory SQLite unit test coverage, and full pytest regression check."
+    },
+    {
+      "text": "korean_body - Main body is in Korean, only code identifiers in English",
+      "passed": true,
+      "evidence": "All section headings (배경, 요구사항, 핵심 요구사항, 금지사항, 선택사항, 제약 조건, 의존성), descriptions, and explanatory text are in Korean. English is used only for code identifiers (project_name, pipeline_type, sqlite3, click, rich), file paths (shared/db/connection.py), CLI commands (uv run video-automation analytics show), and technical terms (SQLite, ISO 8601, Pydantic, FSD)."
+    }
+  ]
+}

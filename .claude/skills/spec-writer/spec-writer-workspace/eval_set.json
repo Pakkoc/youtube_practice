@@ -1,0 +1,22 @@
+[
+  {"query": "캐러셀 카드에서 스와이프할 때 이전 카드 미리보기가 살짝 보이는 기능을 구현해줘. entities/carousel에 preview_mode 필드 추가하고 features/generate_carousel에서 렌더링 로직 분기해야 할 것 같아", "should_trigger": true},
+  {"query": "파이프라인 실행 중 각 단계별 진행률을 실시간으로 터미널에 표시하는 기능 만들어줘. rich 라이브러리 progress bar 사용하고 싶은데", "should_trigger": true},
+  {"query": "SPEC 작성해줘. B-roll 이미지 생성 시 이전 슬라이드와 시각적 일관성을 유지하는 style transfer 기능이 필요해", "should_trigger": true},
+  {"query": "새 기능 추가하고 싶어. 영상 내보내기 시 자동으로 챕터 마커를 생성해서 YouTube 챕터로 쓸 수 있게. script.txt의 ## 헤딩을 기준으로 타임스탬프 매핑", "should_trigger": true},
+  {"query": "명세 만들어줘 — 대본 작성 시 AI가 자동으로 B-roll 삽입 포인트를 제안하는 기능. 현재는 수동으로 지정하는데 이걸 자동화하고 싶어", "should_trigger": true},
+  {"query": "다국어 자막 기능을 구현해야 해. entities/subtitle에 language 필드 추가하고, features/burn_subtitles에서 다중 언어 트랙 지원. 번역은 GPT-5 API 사용", "should_trigger": true},
+  {"query": "영상 생성 후 자동으로 썸네일 3장을 생성하고 사용자가 선택할 수 있는 기능이 필요해. FLUX.2로 생성하고 CLI에서 fzf로 선택하는 UX", "should_trigger": true},
+  {"query": "TTS 음성 품질 자동 검증 시스템을 기획해줘. 생성된 오디오의 발음 정확도, 속도, 감정 톤을 자동 측정하고 기준치 미달 시 재생성", "should_trigger": true},
+  {"query": "기능 구현해줘. 프로젝트 간 에셋(B-roll, TTS 클립, 슬라이드 템플릿) 공유 라이브러리. shared/ 아래 asset_library 모듈 신규 생성 예정", "should_trigger": true},
+  {"query": "워터마크 자동 삽입 기능을 만들고 싶어. 영상 우하단에 채널 로고 반투명 오버레이, 위치/크기/투명도 config로 설정 가능하게", "should_trigger": true},
+  {"query": "ruff check에서 E501 line too long 에러 나는데 고쳐줘. features/generate_tts/lib.py 38번 줄", "should_trigger": false},
+  {"query": "config.base.yaml에서 tts.backend를 elevenlabs로 바꿔줘", "should_trigger": false},
+  {"query": "영상 만들어줘 projects/demo-001/script.txt", "should_trigger": false},
+  {"query": "이 코드 리뷰해줘. features/fetch_broll/api.py에서 에러 핸들링이 빠진 것 같아", "should_trigger": false},
+  {"query": "쇼츠 만들어줘 projects/cc-003", "should_trigger": false},
+  {"query": "generate_tts_for_paragraphs 함수가 뭐하는 건지 설명해줘", "should_trigger": false},
+  {"query": "커밋하고 푸시해줘", "should_trigger": false},
+  {"query": "remotion/src/slides/Slide003.tsx에서 텍스트 색상을 #FFFFFF에서 #F0F0F0으로 바꿔줘", "should_trigger": false},
+  {"query": "pytest 실패하는데 tests/features/test_tts.py::test_generate_audio 로그 좀 봐줘", "should_trigger": false},
+  {"query": "TTS 사전에 'Claude'를 '클로드'로 발음하도록 추가해줘. shared/config/tts_dictionary.yaml 수정", "should_trigger": false}
+]

@@ -1,0 +1,21 @@
+{
+  "skill_name": "generate-script (CC path)",
+  "status": "complete",
+  "current_experiment": 4,
+  "baseline_score": 60.0,
+  "best_score": 100.0,
+  "experiments": [
+    {"id": 0, "score": 15, "max_score": 25, "pass_rate": 60.0, "status": "baseline", "description": "original skill \u2014 no changes"},
+    {"id": 1, "score": 25, "max_score": 25, "pass_rate": 100.0, "status": "keep", "description": "added 5 CC ending patterns + banned repetitive CTA"},
+    {"id": 2, "score": 23, "max_score": 25, "pass_rate": 92.0, "status": "keep", "description": "added CC hook formula + dev-term glossary (minimal prompt test)"},
+    {"id": 3, "score": 25, "max_score": 25, "pass_rate": 100.0, "status": "keep", "description": "added hook-level English abbreviation ban \u2014 fixed cc-045"},
+    {"id": 4, "score": 25, "max_score": 25, "pass_rate": 100.0, "status": "keep", "description": "full validation \u2014 all 5 cards passed"}
+  ],
+  "eval_breakdown": [
+    {"name": "Hook Quality", "pass_count": 22, "total": 25},
+    {"name": "Non-dev Comprehension", "pass_count": 22, "total": 25},
+    {"name": "Conversational Tone", "pass_count": 25, "total": 25},
+    {"name": "Structure Balance", "pass_count": 24, "total": 25},
+    {"name": "Pattern Diversity", "pass_count": 20, "total": 25}
+  ]
+}

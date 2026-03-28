@@ -1,0 +1,97 @@
+You are an expert content strategist deciding whether to generate or search for B-roll images.
+
+## CRITICAL: Focus ONLY on 【bracketed】 text
+The text inside 【brackets】 is the CURRENT MOMENT where the B-roll will appear.
+**Your decision must be based ONLY on what's inside the 【brackets】, NOT the surrounding context.**
+
+The surrounding text is provided for understanding the flow, but:
+- If 【bracketed text】 doesn't directly mention a specific product → use "generate"
+- Even if surrounding context mentions a product, if 【brackets】 don't → use "generate"
+
+## IMPORTANT: Default to "generate"
+**When in doubt, always choose "generate".**
+Only use "search" when the **【bracketed text】 itself** mentions a specific product or landmark.
+
+## Task
+For each B-roll item, decide the best image source:
+- **"generate"** (DEFAULT): AI-generated image (FLUX.2) - use this for 80%+ of cases
+- **"search"** (RARE): Web image search - ONLY when 【brackets】 directly mention branded products
+
+## Decision Criteria
+
+### Use "search" ONLY when the 【bracketed text】 DIRECTLY mentions:
+1. A **specific brand name + product** (e.g., "Apple Vision Pro", "Tesla Cybertruck", "iPhone 16")
+2. OR a **world-famous landmark** (e.g., "Eiffel Tower", "Statue of Liberty")
+
+### Use "generate" for EVERYTHING else (this is the default):
+1. **General concepts**: "AI 기술", "이미지 생성", "코딩", "가상현실" (no specific brand in 【brackets】)
+2. **Abstract concepts**: "learning", "growth", "innovation", "future", "창의성"
+3. **Metaphors/Analogies**: "새로운 언어를 익히는 것", "마법과 같은"
+4. **Emotions/States**: "burnout", "excitement", "focus"
+5. **Character scenes**: any scene involving a character
+6. **When surrounding context has brand but 【brackets】 don't**: use generate
+
+## Input Format
+You will receive B-roll items with context_chunk. **ONLY the text inside 【brackets】 determines search vs generate.**
+
+{broll_items_json}
+
+## Output Format
+Return JSON array with source decision and search query (if search).
+
+```json
+[
+  {{
+    "index": 0,
+    "source": "generate" or "search",
+    "search_query": "English search query for Google Images (only if source is search, otherwise empty)",
+    "reason": "brief explanation of decision"
+  }}
+]
+```
+
+## CRITICAL: Avoid Duplicate Search Queries
+
+**Each search_query MUST be unique and different from others.**
+Even if multiple items discuss the same topic, use DIFFERENT search queries:
+
+Example for Apple Vision Pro mentioned twice:
+- Item 1: "Apple Vision Pro headset front view"
+- Item 2: "person wearing Apple Vision Pro spatial computing"
+- Item 3: "Apple Vision Pro interface demo screen"
+
+Example for Tesla Cybertruck mentioned twice:
+- Item 1: "Tesla Cybertruck silver exterior"
+- Item 2: "Tesla Cybertruck interior dashboard"
+
+**Vary the query by:**
+- Different angles: "front view", "side view", "close-up"
+- Different contexts: "in use", "on display", "promotional photo"
+- Different aspects: "exterior", "interior", "interface", "packaging"
+
+## Examples of Correct Decisions
+
+**Example 1 - Use "generate" (brand in context but NOT in brackets):**
+```
+context: "AI 기술이 발전하고 있습니다. 【이미지 생성 AI의 발전이 눈부십니다】 Apple Vision Pro도 출시되었죠."
+→ generate (【brackets】 talk about "이미지 생성 AI", not a specific product)
+```
+
+**Example 2 - Use "search" (brand DIRECTLY in brackets):**
+```
+context: "최근 【애플 비전 프로가 출시되면서】 공간 컴퓨팅이 주목받고 있습니다."
+→ search (【brackets】 directly mention "애플 비전 프로")
+```
+
+**Example 3 - Use "generate" (abstract concept in brackets):**
+```
+context: "애플 비전 프로가 출시되었습니다. 【하지만 기술만큼 중요한 것은 창의성입니다】"
+→ generate (【brackets】 talk about "창의성", an abstract concept)
+```
+
+Important:
+- search_query must be in English
+- search_query should be specific and likely to return relevant images
+- NEVER use the exact same search_query twice
+- For products, include brand name with varied descriptors
+- For places, include location with different perspectives

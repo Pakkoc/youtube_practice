@@ -1,0 +1,53 @@
+{
+  "skill_name": "spec-writer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "TTS 생성 시 문단별로 감정 태그를 지정할 수 있는 기능을 추가하고 싶어. 대본에 [화남], [기쁨] 같은 태그를 넣으면 해당 감정으로 TTS를 생성하는 거야. entities/script 모델에 emotion 필드를 추가하고, features/generate_tts에서 감정별로 다른 음성 파라미터를 적용해야 해.",
+      "expected_output": "specs/add-emotion-tts/ 디렉토리에 spec.md, plan.md, acceptance.md 3파일 생성. EARS 형식 요구사항 포함, FSD 레이어 매핑(entities/script + features/generate_tts), Given/When/Then 시나리오 포함.",
+      "files": [],
+      "assertions": [
+        {"id": "A1", "text": "spec.md, plan.md, acceptance.md 3파일이 specs/ 하위 디렉토리에 존재"},
+        {"id": "A2", "text": "spec.md에 EARS 패턴 사용 (WHEN/THEN, WHILE, ~해야 한다, ~하면 안 된다)"},
+        {"id": "A3", "text": "spec.md에 구조화된 요구사항 ID (REQ-01, REQ-N01, REQ-O01 등)"},
+        {"id": "A4", "text": "spec.md에 FSD 레이어/슬라이스 매핑 테이블 존재"},
+        {"id": "A5", "text": "plan.md에 LOW/MEDIUM/HIGH 위험도 분류 존재"},
+        {"id": "A6", "text": "acceptance.md에 Given/When/Then 시나리오 최소 2개"},
+        {"id": "A7", "text": "acceptance.md에 lint/test/FSD 검증 품질 게이트 체크리스트 포함"},
+        {"id": "A8", "text": "본문 한국어, 코드 식별자만 영어"}
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "영상 생성 완료 후 자동으로 YouTube에 업로드하는 기능을 만들어줘. 제목, 설명, 태그, 썸네일까지 자동 설정. 비공개로 먼저 올리고 사용자가 확인 후 공개 전환할 수 있게.",
+      "expected_output": "specs/auto-upload-youtube/ 디렉토리에 3파일 생성. YouTube Data API v3 외부 의존성 명시, OAuth2 인증 HIGH 위험 태깅, 비공개→공개 상태 전환 시나리오 포함.",
+      "files": [],
+      "assertions": [
+        {"id": "A1", "text": "spec.md, plan.md, acceptance.md 3파일이 specs/ 하위 디렉토리에 존재"},
+        {"id": "A2", "text": "spec.md에 EARS 패턴 사용 (WHEN/THEN, WHILE, ~해야 한다, ~하면 안 된다)"},
+        {"id": "A3", "text": "spec.md에 구조화된 요구사항 ID (REQ-01, REQ-N01, REQ-O01 등)"},
+        {"id": "A4", "text": "spec.md에 FSD 레이어/슬라이스 매핑 테이블 존재"},
+        {"id": "A5", "text": "plan.md에 LOW/MEDIUM/HIGH 위험도 분류 존재"},
+        {"id": "A6", "text": "acceptance.md에 Given/When/Then 시나리오 최소 2개"},
+        {"id": "A7", "text": "acceptance.md에 lint/test/FSD 검증 품질 게이트 체크리스트 포함"},
+        {"id": "A8", "text": "본문 한국어, 코드 식별자만 영어"}
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "프로젝트별 분석 대시보드를 만들고 싶어. 각 프로젝트의 생성 이력(슬라이드 수, TTS 시간, B-roll 수, 렌더링 소요 시간)을 추적하고 통계를 볼 수 있는 CLI 명령어. 데이터는 SQLite에 저장.",
+      "expected_output": "specs/project-analytics/ 디렉토리에 3파일 생성. entities/project에 analytics 모델 추가, features/track_analytics 신규 슬라이스, shared/에 SQLite 클라이언트 래퍼, CLI 엔드포인트 매핑 포함.",
+      "files": [],
+      "assertions": [
+        {"id": "A1", "text": "spec.md, plan.md, acceptance.md 3파일이 specs/ 하위 디렉토리에 존재"},
+        {"id": "A2", "text": "spec.md에 EARS 패턴 사용 (WHEN/THEN, WHILE, ~해야 한다, ~하면 안 된다)"},
+        {"id": "A3", "text": "spec.md에 구조화된 요구사항 ID (REQ-01, REQ-N01, REQ-O01 등)"},
+        {"id": "A4", "text": "spec.md에 FSD 레이어/슬라이스 매핑 테이블 존재"},
+        {"id": "A5", "text": "plan.md에 LOW/MEDIUM/HIGH 위험도 분류 존재"},
+        {"id": "A6", "text": "acceptance.md에 Given/When/Then 시나리오 최소 2개"},
+        {"id": "A7", "text": "acceptance.md에 lint/test/FSD 검증 품질 게이트 체크리스트 포함"},
+        {"id": "A8", "text": "본문 한국어, 코드 식별자만 영어"}
+      ]
+    }
+  ]
+}

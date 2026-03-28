@@ -1,0 +1,47 @@
+{
+  "eval_id": 2,
+  "eval_name": "youtube-upload",
+  "configuration": "with_skill",
+  "expectations": [
+    {
+      "text": "three_files_exist - spec.md, plan.md, acceptance.md all exist in a specs/ subdirectory",
+      "passed": true,
+      "evidence": "All three files exist at specs/auto-upload-youtube/spec.md, specs/auto-upload-youtube/plan.md, specs/auto-upload-youtube/acceptance.md inside the outputs/ directory."
+    },
+    {
+      "text": "ears_format - spec.md uses EARS patterns (keywords: WHEN, THEN, WHILE, ~해야 한다, ~하면 안 된다)",
+      "passed": true,
+      "evidence": "WHEN/THEN used in REQ-02 (\"WHEN 업로드 요청이 발생하면, THEN 시스템은\"), REQ-04, REQ-05, REQ-07, REQ-08. Korean EARS: \"~해야 한다\" in REQ-01 (\"업로드해야 한다\"), REQ-06 (\"자동 갱신해야 한다\"); \"~하면 안 된다\" in REQ-N01 (\"업로드하면 안 된다\"), REQ-N02 (\"하드코딩하면 안 된다\"), REQ-N03 (\"실패하면 안 된다\")."
+    },
+    {
+      "text": "requirement_ids - spec.md has structured requirement IDs (REQ-01, REQ-N01, REQ-O01, etc.)",
+      "passed": true,
+      "evidence": "Core requirements: REQ-01 through REQ-08. Negative requirements: REQ-N01 through REQ-N03. Optional requirements: REQ-O01 through REQ-O03. All consistently formatted as [REQ-XX]."
+    },
+    {
+      "text": "fsd_layer_mapping - spec.md has a table mapping affected FSD layers/slices",
+      "passed": true,
+      "evidence": "Table under '## FSD 레이어 매핑' with columns 레이어|슬라이스|변경 유형, mapping shared/api/, entities/video/, features/, app/ layers with specific slices (youtube.py, upload_youtube/, generate_metadata/, cli.py, schema.py) and change types (신규 생성/수정)."
+    },
+    {
+      "text": "risk_tagging - plan.md has LOW/MEDIUM/HIGH risk classification on tasks",
+      "passed": true,
+      "evidence": "Task table under '## 작업 분해' includes 위험도 column with values: LOW (tasks 1,2,7,9,10,12,13), MEDIUM (tasks 5,6,8,11,14,15,16), HIGH (tasks 3,4). Also a separate '## 위험 분석' table with HIGH/MEDIUM/LOW impact ratings."
+    },
+    {
+      "text": "gwt_scenarios - acceptance.md has at least 2 Given/When/Then scenarios",
+      "passed": true,
+      "evidence": "acceptance.md contains 18 Given/When/Then scenarios across 9 requirement sections: REQ-01 (3 scenarios), REQ-02 (2), REQ-03 (1), REQ-04 (3), REQ-05 (1), REQ-06 (3), REQ-07 (3), REQ-08 (2), REQ-N01 (1). All use explicit Given/When/Then markers."
+    },
+    {
+      "text": "quality_gates - acceptance.md includes lint/test/FSD verification checklist",
+      "passed": true,
+      "evidence": "Section '## 품질 게이트' at lines 141-149 includes: ruff check, ruff format --check, mypy type check, lint-imports FSD rule check, pytest for upload_youtube and youtube_api tests, and 80% test coverage requirement for core paths."
+    },
+    {
+      "text": "korean_body - Main body is in Korean, only code identifiers in English",
+      "passed": true,
+      "evidence": "All three files use Korean for headings, descriptions, and explanatory text (e.g., '배경', '요구사항', '핵심 요구사항', '금지사항', '선택사항', '제약 조건', '작업 분해', '위험 분석'). English is limited to code identifiers (final_video.mp4, upload_result.json, VideoMetadata), API names (OAuth2, YouTube Data API v3), and technical terms (private, public, resumable upload)."
+    }
+  ]
+}

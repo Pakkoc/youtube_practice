@@ -1,0 +1,193 @@
+{
+  "metadata": {
+    "skill_name": "spec-writer",
+    "skill_path": "C:/Users/hoyoung/Desktop/Youtube-Automation/.claude/skills/spec-writer",
+    "executor_model": "claude-opus-4-6",
+    "analyzer_model": "claude-opus-4-6",
+    "timestamp": "2026-03-26T09:30:00Z",
+    "evals_run": [1, 2, 3],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "eval_name": "emotion-tts",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 8,
+        "failed": 0,
+        "total": 8,
+        "time_seconds": 184.9,
+        "tokens": 50145,
+        "tool_calls": 20,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "spec.md, plan.md, acceptance.md 3파일이 specs/ 하위 디렉토리에 존재", "passed": true, "evidence": "3 files found in specs/add-emotion-tts/"},
+        {"text": "spec.md에 EARS 패턴 사용", "passed": true, "evidence": "WHEN/THEN keywords found, ~해야 한다 patterns used"},
+        {"text": "구조화된 요구사항 ID (REQ-01, REQ-N01 등)", "passed": true, "evidence": "REQ-01~06, REQ-N01~03, REQ-O01~02"},
+        {"text": "FSD 레이어/슬라이스 매핑 테이블 존재", "passed": true, "evidence": "Layer mapping table present"},
+        {"text": "LOW/MEDIUM/HIGH 위험도 분류", "passed": true, "evidence": "All 11 tasks tagged with risk levels"},
+        {"text": "Given/When/Then 시나리오 최소 2개", "passed": true, "evidence": "15 GWT scenarios found"},
+        {"text": "품질 게이트 체크리스트", "passed": true, "evidence": "ruff, mypy, lint-imports, pytest checklist present"},
+        {"text": "한국어 본문, 영어 코드 식별자", "passed": true, "evidence": "Korean body with English identifiers"}
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "emotion-tts",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5,
+        "passed": 4,
+        "failed": 4,
+        "total": 8,
+        "time_seconds": 311.56,
+        "tokens": 70017,
+        "tool_calls": 28,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "spec.md, plan.md, acceptance.md 3파일이 specs/ 하위 디렉토리에 존재", "passed": false, "evidence": "Files use different names (01-feature-spec.md etc.) in outputs/ root"},
+        {"text": "spec.md에 EARS 패턴 사용", "passed": false, "evidence": "No EARS keywords found"},
+        {"text": "구조화된 요구사항 ID (REQ-01, REQ-N01 등)", "passed": false, "evidence": "Uses section numbering instead"},
+        {"text": "FSD 레이어/슬라이스 매핑 테이블 존재", "passed": true, "evidence": "Table maps FSD layers to files"},
+        {"text": "LOW/MEDIUM/HIGH 위험도 분류", "passed": true, "evidence": "Korean equivalents used on risks"},
+        {"text": "Given/When/Then 시나리오 최소 2개", "passed": false, "evidence": "Tests in tables, no GWT format"},
+        {"text": "품질 게이트 체크리스트", "passed": true, "evidence": "ruff, lint-imports, pytest mentioned"},
+        {"text": "한국어 본문, 영어 코드 식별자", "passed": true, "evidence": "Korean prose throughout"}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "youtube-upload",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 8,
+        "failed": 0,
+        "total": 8,
+        "time_seconds": 199.95,
+        "tokens": 46892,
+        "tool_calls": 22,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "spec.md, plan.md, acceptance.md 3파일이 specs/ 하위 디렉토리에 존재", "passed": true, "evidence": "3 files in specs/auto-upload-youtube/"},
+        {"text": "spec.md에 EARS 패턴 사용", "passed": true, "evidence": "WHEN/THEN keywords and Korean EARS patterns"},
+        {"text": "구조화된 요구사항 ID (REQ-01, REQ-N01 등)", "passed": true, "evidence": "REQ-01~08, REQ-N01~03, REQ-O01~03"},
+        {"text": "FSD 레이어/슬라이스 매핑 테이블 존재", "passed": true, "evidence": "FSD layer mapping table present"},
+        {"text": "LOW/MEDIUM/HIGH 위험도 분류", "passed": true, "evidence": "16 tasks with risk tags + risk analysis table"},
+        {"text": "Given/When/Then 시나리오 최소 2개", "passed": true, "evidence": "18 GWT scenarios"},
+        {"text": "품질 게이트 체크리스트", "passed": true, "evidence": "ruff, mypy, lint-imports, pytest checklist"},
+        {"text": "한국어 본문, 영어 코드 식별자", "passed": true, "evidence": "Korean body with English identifiers"}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "youtube-upload",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.375,
+        "passed": 3,
+        "failed": 5,
+        "total": 8,
+        "time_seconds": 297.09,
+        "tokens": 72030,
+        "tool_calls": 34,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "spec.md, plan.md, acceptance.md 3파일이 specs/ 하위 디렉토리에 존재", "passed": false, "evidence": "Custom file names in root, no specs/ dir"},
+        {"text": "spec.md에 EARS 패턴 사용", "passed": false, "evidence": "Plain table rows R1-R10, no EARS keywords"},
+        {"text": "구조화된 요구사항 ID (REQ-01, REQ-N01 등)", "passed": false, "evidence": "Simple R1-R10 IDs"},
+        {"text": "FSD 레이어/슬라이스 매핑 테이블 존재", "passed": true, "evidence": "Detailed FSD mapping in architecture doc"},
+        {"text": "LOW/MEDIUM/HIGH 위험도 분류", "passed": false, "evidence": "Descriptive text, no severity classification"},
+        {"text": "Given/When/Then 시나리오 최소 2개", "passed": false, "evidence": "Bash CLI examples, not GWT format"},
+        {"text": "품질 게이트 체크리스트", "passed": true, "evidence": "Verification with pytest, ruff, lint-imports"},
+        {"text": "한국어 본문, 영어 코드 식별자", "passed": true, "evidence": "Korean throughout"}
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "project-analytics",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 8,
+        "failed": 0,
+        "total": 8,
+        "time_seconds": 201.09,
+        "tokens": 47440,
+        "tool_calls": 19,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "spec.md, plan.md, acceptance.md 3파일이 specs/ 하위 디렉토리에 존재", "passed": true, "evidence": "3 files in specs/project-analytics/"},
+        {"text": "spec.md에 EARS 패턴 사용", "passed": true, "evidence": "WHEN/THEN patterns found"},
+        {"text": "구조화된 요구사항 ID (REQ-01, REQ-N01 등)", "passed": true, "evidence": "REQ-01~06, REQ-N01~N03, REQ-O01~O03"},
+        {"text": "FSD 레이어/슬라이스 매핑 테이블 존재", "passed": true, "evidence": "Layer mapping table present"},
+        {"text": "LOW/MEDIUM/HIGH 위험도 분류", "passed": true, "evidence": "Tasks tagged with LOW/MEDIUM risk"},
+        {"text": "Given/When/Then 시나리오 최소 2개", "passed": true, "evidence": "14 GWT scenarios"},
+        {"text": "품질 게이트 체크리스트", "passed": true, "evidence": "ruff, mypy, lint-imports, pytest checklist"},
+        {"text": "한국어 본문, 영어 코드 식별자", "passed": true, "evidence": "Korean body text"}
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "project-analytics",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.375,
+        "passed": 3,
+        "failed": 5,
+        "total": 8,
+        "time_seconds": 311.41,
+        "tokens": 67571,
+        "tool_calls": 37,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "spec.md, plan.md, acceptance.md 3파일이 specs/ 하위 디렉토리에 존재", "passed": false, "evidence": "7 numbered files in root, no specs/ dir"},
+        {"text": "spec.md에 EARS 패턴 사용", "passed": false, "evidence": "No EARS patterns, only SQL CASE WHEN"},
+        {"text": "구조화된 요구사항 ID (REQ-01, REQ-N01 등)", "passed": false, "evidence": "No structured IDs"},
+        {"text": "FSD 레이어/슬라이스 매핑 테이블 존재", "passed": true, "evidence": "Table in file-tree-summary.md"},
+        {"text": "LOW/MEDIUM/HIGH 위험도 분류", "passed": false, "evidence": "Risks in prose without classification"},
+        {"text": "Given/When/Then 시나리오 최소 2개", "passed": false, "evidence": "Test stubs, no GWT scenarios"},
+        {"text": "품질 게이트 체크리스트", "passed": true, "evidence": "Phase 5 covers ruff, mypy, lint-imports"},
+        {"text": "한국어 본문, 영어 코드 식별자", "passed": true, "evidence": "Korean prose throughout"}
+      ]
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {"mean": 1.0, "stddev": 0.0, "min": 1.0, "max": 1.0},
+      "time_seconds": {"mean": 195.3, "stddev": 8.5, "min": 184.9, "max": 201.1},
+      "tokens": {"mean": 48159, "stddev": 1703, "min": 46892, "max": 50145}
+    },
+    "without_skill": {
+      "pass_rate": {"mean": 0.417, "stddev": 0.072, "min": 0.375, "max": 0.5},
+      "time_seconds": {"mean": 306.7, "stddev": 7.8, "min": 297.1, "max": 311.6},
+      "tokens": {"mean": 69873, "stddev": 2236, "min": 67571, "max": 72030}
+    },
+    "delta": {
+      "pass_rate": "+0.583",
+      "time_seconds": "-111.4",
+      "tokens": "-21714"
+    }
+  },
+  "notes": [
+    "Assertions A4 (FSD mapping), A7 (quality gates), A8 (Korean body) pass in both configurations - baseline naturally includes these due to CLAUDE.md project context",
+    "Assertions A1 (3-file structure), A2 (EARS format), A3 (REQ IDs), A6 (GWT scenarios) are skill-exclusive - 0% baseline pass rate across all evals",
+    "A5 (risk tagging) partially discriminating - baseline passes 1/3 (Korean equivalents in emotion-tts)",
+    "With-skill runs use 31% fewer tokens (48k vs 70k avg) and complete 36% faster (195s vs 307s avg)",
+    "Baseline produces more files (4-7 per eval) but with inconsistent structure; skill produces exactly 3 files consistently"
+  ]
+}

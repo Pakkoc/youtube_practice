@@ -1,0 +1,47 @@
+{
+  "eval_id": 2,
+  "eval_name": "youtube-upload",
+  "configuration": "without_skill",
+  "expectations": [
+    {
+      "text": "spec.md, plan.md, acceptance.md all exist (exact names, in a specs/ subdirectory)",
+      "passed": false,
+      "evidence": "No specs/ subdirectory exists. Output contains 5 files with different names: 01-feature-spec.md, 02-architecture-design.md, 03-implementation-plan.md, 04-config-and-prompt-design.md, 05-file-change-summary.md. None match the required exact names spec.md, plan.md, acceptance.md."
+    },
+    {
+      "text": "Uses EARS requirement patterns (keywords: WHEN, THEN, WHILE, ~해야 한다, ~하면 안 된다)",
+      "passed": false,
+      "evidence": "No EARS-style requirement patterns found. The only match for '해야 한다' is a narrative sentence in 01-feature-spec.md line 12: '수동으로 YouTube Studio에서 수행해야 한다' which is describing the current problem, not a structured EARS requirement. No WHEN/THEN/WHILE keywords used in requirement definitions. Requirements are listed in a plain table format (R1-R10) with short descriptions and priority labels."
+    },
+    {
+      "text": "Has structured requirement IDs (REQ-01, REQ-N01, REQ-O01, etc.)",
+      "passed": false,
+      "evidence": "Requirements use simple IDs: R1 through R10 (e.g., '| R1 | 영상 파일을 YouTube Data API v3로 업로드 | P0 |'). These lack the structured prefix format (REQ-01, REQ-N01, REQ-O01) that distinguishes functional, non-functional, and optional requirements."
+    },
+    {
+      "text": "Has a table mapping affected FSD layers/slices",
+      "passed": true,
+      "evidence": "02-architecture-design.md Section 1 ('FSD 레이어 배치') provides a detailed directory tree mapping each module to its FSD layer (shared, entities, features, pipelines, app). 05-file-change-summary.md contains tables listing new files (7) and modified files (6) with their FSD layer and role. Section 'FSD Import 방향 검증' explicitly validates import direction compliance per layer."
+    },
+    {
+      "text": "Has LOW/MEDIUM/HIGH risk classification on tasks",
+      "passed": false,
+      "evidence": "03-implementation-plan.md Section 8 has a '리스크 및 대응' table with columns 리스크/영향/대응, but the '영향' column contains descriptive text (e.g., '업로드 실패', '인증 실패') rather than LOW/MEDIUM/HIGH severity classifications. No LOW/MEDIUM/HIGH keywords appear anywhere in any output file."
+    },
+    {
+      "text": "Has at least 2 Given/When/Then scenarios",
+      "passed": false,
+      "evidence": "No Given/When/Then (GWT) structured test scenarios exist anywhere in the outputs. 01-feature-spec.md has 4 user scenarios (A-D) but these are CLI usage examples (bash commands), not GWT format. 03-implementation-plan.md has test checklists (Phase 5) but uses checkbox format, not GWT."
+    },
+    {
+      "text": "Includes lint/test/FSD verification checklist",
+      "passed": true,
+      "evidence": "03-implementation-plan.md includes verification checkpoints after each phase: 'pytest tests/shared/ 통과 확인' (Phase 1), 'ruff check features/upload_youtube/ + lint-imports 통과' (Phase 2), 'python -m app.cli youtube --help 출력 확인' (Phase 3). Phase 5 lists specific pytest test items. 05-file-change-summary.md has an 'FSD Import 방향 검증' section confirming all import directions and states 'lint-imports 통과 예상'."
+    },
+    {
+      "text": "Main body is in Korean, only code identifiers in English",
+      "passed": true,
+      "evidence": "All five output files use Korean for prose, headings, table content, and descriptions. English is used only for code identifiers (function names like 'upload_video_resumable', file paths like 'shared/api/youtube.py'), technical terms (OAuth, API, FSD), and code blocks. Example heading: 'YouTube 업로드 기능 -- 아키텍처 설계'. Example table cell: '영상 파일을 YouTube Data API v3로 업로드'."
+    }
+  ]
+}

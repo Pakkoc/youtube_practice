@@ -1,0 +1,47 @@
+{
+  "eval_id": 1,
+  "eval_name": "emotion-tts",
+  "configuration": "with_skill",
+  "expectations": [
+    {
+      "text": "three_files_exist - spec.md, plan.md, acceptance.md all exist in a specs/ subdirectory",
+      "passed": true,
+      "evidence": "All three files found at outputs/specs/add-emotion-tts/spec.md, plan.md, acceptance.md"
+    },
+    {
+      "text": "ears_format - spec.md uses EARS patterns (keywords: WHEN, THEN, WHILE, ~해야 한다, ~하면 안 된다)",
+      "passed": true,
+      "evidence": "spec.md uses WHEN/THEN patterns (e.g., REQ-02: 'WHEN 대본 텍스트에 [...] 패턴이 문단 시작에 존재하면, THEN 해당 태그를 [...] 파싱하여 저장하고') and Korean EARS phrasing (REQ-01: '필드를 가져야 한다', REQ-N01: '포함되면 안 된다', REQ-N02: '변경되면 안 된다', REQ-N03: '에러를 발생시키지 않고')"
+    },
+    {
+      "text": "requirement_ids - spec.md has structured requirement IDs (REQ-01, REQ-N01, REQ-O01, etc.)",
+      "passed": true,
+      "evidence": "spec.md contains core requirements REQ-01 through REQ-06, negative requirements REQ-N01 through REQ-N03, and optional requirements REQ-O01 and REQ-O02"
+    },
+    {
+      "text": "fsd_layer_mapping - spec.md has a table mapping affected FSD layers/slices",
+      "passed": true,
+      "evidence": "spec.md has 'FSD 레이어 매핑' section with a table containing columns 레이어/슬라이스/변경 유형, mapping entities/script, features/generate_tts, and features/split_paragraphs with change descriptions"
+    },
+    {
+      "text": "risk_tagging - plan.md has LOW/MEDIUM/HIGH risk classification on tasks",
+      "passed": true,
+      "evidence": "plan.md '작업 분해' table has a '위험도' column with LOW and MEDIUM tags (tasks 1-5,7,9-11 are LOW; tasks 6,8 are MEDIUM). Also has a separate '위험 분석' table with MEDIUM and LOW impact ratings"
+    },
+    {
+      "text": "gwt_scenarios - acceptance.md has at least 2 Given/When/Then scenarios",
+      "passed": true,
+      "evidence": "acceptance.md contains 15 Given/When/Then scenarios across requirements REQ-01 (3 scenarios), REQ-02 (4 scenarios), REQ-03 (2 scenarios), REQ-04 (1), REQ-06 (2), REQ-N01 (1), REQ-N02 (1), REQ-N03 (1)"
+    },
+    {
+      "text": "quality_gates - acceptance.md includes lint/test/FSD verification checklist",
+      "passed": true,
+      "evidence": "acceptance.md '품질 게이트' section includes checklist items: 'ruff check .', 'ruff format --check .', 'mypy entities shared', 'lint-imports FSD 규칙 통과', 'pytest tests/' plus additional domain-specific test items"
+    },
+    {
+      "text": "korean_body - Main body is in Korean, only code identifiers in English",
+      "passed": true,
+      "evidence": "All three files use Korean for headings, descriptions, and prose (e.g., '배경', '요구사항', '금지사항', '작업 분해', '인수 기준'). English appears only in code identifiers (Paragraph, emotion, TTSRequest, split_script, EMOTION_MAP), EARS keywords (WHEN/THEN), risk tags (LOW/MEDIUM), and code snippets"
+    }
+  ]
+}

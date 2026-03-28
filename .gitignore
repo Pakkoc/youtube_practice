@@ -1,0 +1,100 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+nul
+
+# 환경 변수 / 비밀 키
+.env
+.env.local
+config/credentials/
+
+# 프로젝트 데이터 (대용량 미디어 + 생성 결과물)
+projects/
+
+# 테스트 파일 (임시)
+test_*.py
+test_*.mp4
+test_*.png
+test_*.log
+test_*.txt
+_tts_test*
+
+# 임시 파일
+_temp_*/
+*.tmp
+*.log
+
+# PyTorch 모델 캐시 (대용량)
+*.pth
+*.bin
+*.safetensors
+
+# 예외: speaker embedding 파일은 작음 (6KB)
+# voice-fine-tuning/speakers/*/v*/speaker_embedding_final.pt 는 포함
+
+# Voice Fine-Tuning (대용량 파일)
+voice-fine-tuning/models/
+voice-fine-tuning/tools/
+voice-fine-tuning/speakers/*/v*/raw_audio/
+voice-fine-tuning/speakers/*/v*/dataset/
+voice-fine-tuning/speakers/*/v*/checkpoints/
+voice-fine-tuning/speakers/*/v*/tensorboard/
+voice-fine-tuning/speakers/*/v*/samples/
+
+# 예외: speaker embedding (작은 파일, 필요)
+!voice-fine-tuning/speakers/*/v*/speaker_embedding_final.pt
+
+# Claude Code (로컬 전용)
+.claude/settings.local.json
+.claude/hooks/__pycache__/
+.claude/agent-memory/
+
+# 참고 자료 (별도 관리)
+voice-tts-fine-tuning-reference/
+design-guide/
+
+# Remotion 테스트 출력
+remotion/out/
+remotion/eval-motion/
+
+# 평가/테스트 산출물 (mp4, png, json)
+eval-motion/
+
+# Manim 캐시
+media/
+
+# Voice clone 작업 디렉토리 (대용량 오디오)
+voice_clone/
+
+# Node modules
+node_modules/
+remotion/node_modules/
+
+# Lock 파일 (참고용)
+requirements.lock.txt
+
+# 분석용 임시 프레임
+analysis_frames/
+youtube-automation-workshop.zip

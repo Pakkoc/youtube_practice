@@ -1,0 +1,1 @@
+export { sceneFadeOpacity } from "./sceneFade";

@@ -1,0 +1,6 @@
+{
+  "eval_id": 1,
+  "eval_name": "emotion-tts",
+  "prompt": "TTS 생성 시 문단별로 감정 태그를 지정할 수 있는 기능을 추가하고 싶어. 대본에 [화남], [기쁨] 같은 태그를 넣으면 해당 감정으로 TTS를 생성하는 거야. entities/script 모델에 emotion 필드를 추가하고, features/generate_tts에서 감정별로 다른 음성 파라미터를 적용해야 해.",
+  "assertions": []
+}

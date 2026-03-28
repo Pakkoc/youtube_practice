@@ -1,0 +1,47 @@
+{
+  "eval_id": 3,
+  "eval_name": "project-analytics",
+  "configuration": "without_skill",
+  "expectations": [
+    {
+      "text": "spec.md, plan.md, acceptance.md all exist (exact names, in a specs/ subdirectory)",
+      "passed": false,
+      "evidence": "No specs/ subdirectory exists. Output contains 7 numbered files (01-feature-overview.md through 07-file-tree-summary.md) directly in the outputs/ directory. None match the required filenames spec.md, plan.md, or acceptance.md."
+    },
+    {
+      "text": "Uses EARS requirement patterns (keywords: WHEN, THEN, WHILE, ~해야 한다, ~하면 안 된다)",
+      "passed": false,
+      "evidence": "No EARS-style requirement sentences found. The only WHEN/THEN hits are SQL CASE WHEN/THEN clauses in 03-database-schema.md (line 129-130), which are SQL syntax, not EARS requirement patterns. No instances of 해야 한다 or 하면 안 된다 found anywhere."
+    },
+    {
+      "text": "Has structured requirement IDs (REQ-01, REQ-N01, REQ-O01, etc.)",
+      "passed": false,
+      "evidence": "No requirement IDs matching the REQ-XX pattern found in any file. Requirements are described in prose and tables without formal IDs."
+    },
+    {
+      "text": "Has a table mapping affected FSD layers/slices",
+      "passed": true,
+      "evidence": "07-file-tree-summary.md contains a table at line 60-68 with columns 'FSD 계층 | 신규 | 수정 | 설명' mapping shared, entities, features, pipelines, app, tests, and config layers. Additionally, 02-architecture-design.md (lines 57-67) has a file-path-to-layer table with columns '파일 경로 | 역할 | 계층'."
+    },
+    {
+      "text": "Has LOW/MEDIUM/HIGH risk classification on tasks",
+      "passed": false,
+      "evidence": "06-implementation-plan.md has a '리스크 및 주의사항' section (line 198) with a table of risks and mitigations, but risks are described in prose without LOW/MEDIUM/HIGH severity classification labels."
+    },
+    {
+      "text": "Has at least 2 Given/When/Then scenarios",
+      "passed": false,
+      "evidence": "No Given/When/Then scenario patterns found in any file. Test cases are listed as method stubs (e.g., test_returns_run_id, test_success_flow) without GWT scenario format."
+    },
+    {
+      "text": "Includes lint/test/FSD verification checklist",
+      "passed": true,
+      "evidence": "06-implementation-plan.md Phase 5 (lines 107-114) lists: ruff check/format, mypy type check, lint-imports, pytest, and E2E verification. Phase 4 (lines 87-101) also includes per-pipeline verification with ruff check, lint-imports, unit tests, and runtime testing. This constitutes a quality gate checklist covering lint, test, and FSD verification."
+    },
+    {
+      "text": "Main body is in Korean, only code identifiers in English",
+      "passed": true,
+      "evidence": "All seven files use Korean for prose/headings/descriptions (e.g., '프로젝트별 영상 생성 이력을 SQLite에 자동 기록하고', '파이프라인 실행을 자동 추적', '기존 아키텍처 규칙을 준수하여'). English is used only for code identifiers, file paths, SQL keywords, and technical terms (e.g., PipelineRun, track_pipeline, WAL)."
+    }
+  ]
+}

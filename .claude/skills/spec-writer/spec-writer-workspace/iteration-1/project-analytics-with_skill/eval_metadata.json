@@ -1,0 +1,6 @@
+{
+  "eval_id": 3,
+  "eval_name": "project-analytics",
+  "prompt": "프로젝트별 분석 대시보드를 만들고 싶어. 각 프로젝트의 생성 이력(슬라이드 수, TTS 시간, B-roll 수, 렌더링 소요 시간)을 추적하고 통계를 볼 수 있는 CLI 명령어. 데이터는 SQLite에 저장.",
+  "assertions": []
+}

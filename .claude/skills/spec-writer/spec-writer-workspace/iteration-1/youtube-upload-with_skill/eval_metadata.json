@@ -1,0 +1,6 @@
+{
+  "eval_id": 2,
+  "eval_name": "youtube-upload",
+  "prompt": "영상 생성 완료 후 자동으로 YouTube에 업로드하는 기능을 만들어줘. 제목, 설명, 태그, 썸네일까지 자동 설정. 비공개로 먼저 올리고 사용자가 확인 후 공개 전환할 수 있게.",
+  "assertions": []
+}

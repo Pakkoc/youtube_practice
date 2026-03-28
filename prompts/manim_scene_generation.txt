@@ -1,0 +1,247 @@
+Generate a Manim Community Edition scene for a YouTube educational slide.
+
+## Video Info
+- Topic: {video_topic}
+- Slide: {current_index}/{total_paragraphs}
+
+## Paragraph Text
+{paragraph_text}
+
+## Slide Plan
+- Content plan: {content_plan}
+- Visual elements: {visual_elements}
+
+## Design System (Remotion TSX slides match)
+
+This Manim slide MUST match the visual style of our Remotion TSX slides.
+
+### Color Palette (mandatory)
+```python
+BG       = "#0B0C0E"   # background (near-black)
+TEXT     = "#EDEDEF"   # primary text (off-white)
+ACCENT   = "#7C7FD9"   # purple/lavender — boxes, lines, highlights
+ACCENT_B = "#9B9EFF"   # bright accent — bold text, numbers
+TEAL     = "#3CB4B4"   # secondary accent — gradient pair with ACCENT
+MUTED    = "#9394A1"   # secondary text, context
+CODE_BG  = "#1C1E21"   # code block / card surface
+```
+
+### Visual Rules
+1. **Gradient bars**: Horizontal separator/underline = ACCENT→TEAL gradient.
+   Use `color_gradient([ACCENT, TEAL], length)` or a thin gradient Rectangle.
+2. **Glass card effect**: Semi-transparent card behind content.
+   `RoundedRectangle(corner_radius=0.2, fill_color=WHITE, fill_opacity=0.03, stroke_color=WHITE, stroke_opacity=0.06)`
+3. **Glow effect**: Use glowing dots or circles behind key numbers/text.
+   `Circle(radius=r, fill_color=ACCENT, fill_opacity=0.15, stroke_width=0)` behind content.
+4. **Bold keywords**: Highlight key words with ACCENT_BRIGHT color, not bold font.
+5. **Title**: font_size=44-50, color=TEXT, weight=ULTRABOLD, at top (buff=0.5-0.7 from edge).
+6. **Body text**: font_size=28-36, color=TEXT, weight=MEDIUM.
+7. **Muted text / context**: font_size=22-26, color=MUTED, weight=MEDIUM.
+8. **Number emphasis**: font_size=68-88, color=ACCENT_BRIGHT, weight=ULTRABOLD, with radial glow behind.
+9. **Box borders**: Use ACCENT color, stroke_width=1.5-2, corner_radius=0.15.
+10. **Staggered entrance**: Items appear one by one with `lag_ratio=0.15-0.3`.
+11. **Spacing**: Keep content in upper 2/3. Bottom 1/3 reserved for subtitles.
+
+### Animation Style
+- Title: `Write()` or `FadeIn(shift=UP*0.3)`
+- Items: staggered `FadeIn(shift=UP*0.2)` with `AnimationGroup(lag_ratio=0.2)`
+- Lines/bars: `Create()` (draws left to right)
+- Emphasis: `Indicate()` with color=ACCENT
+- Keep total animation steps to 4-8 (concise, not busy)
+- `run_time=0.6-0.8` for most animations (snappy feel)
+
+## Auto-Injected Frame (DO NOT DUPLICATE)
+
+The rendering backend automatically injects these elements before your code runs:
+- **Gradient background**: full-frame, `#0A2332` (top) → `#1E0F3C` (bottom)
+- **Dark content card**: 13.4×7.28 Manim units, `#0B0C0E`, rounded corners, subtle border
+- **Progress bar**: at card bottom, gradient fill based on slide index
+
+**Do NOT** create your own outer frame, background rectangle, or progress indicator.
+Your content renders on top of these auto-injected layers.
+
+## Requirements
+
+1. Class name MUST be `ManimSlide` inheriting from `Scene`
+2. Use font="Pretendard" and appropriate weight= for ALL Text objects. Title: weight=ULTRABOLD, body: weight=MEDIUM, labels: weight=BOLD.
+3. Background: `self.camera.background_color = "#0B0C0E"`
+4. End with `self.wait(0.01)  # DURATION_PLACEHOLDER`
+5. All text must be complete (no truncation)
+6. Define colors at top of construct():
+   ```python
+   TEXT = ManimColor("#EDEDEF")
+   ACCENT = ManimColor("#7C7FD9")
+   ACCENT_B = ManimColor("#9B9EFF")
+   TEAL = ManimColor("#3CB4B4")
+   MUTED = ManimColor("#9394A1")
+   ```
+
+## Available Manim CE APIs (use ONLY these)
+
+### Text & Math
+- `Text("content", font="Pretendard", font_size=48, color=TEXT, weight=ULTRABOLD)`
+- `MathTex(r"\LaTeX", font_size=36)` for equations
+- `Tex(r"text", font_size=36)` for mixed text+math
+
+### Shapes & Layout
+- `VGroup(*mobjects).arrange(DOWN, buff=0.5)`
+- `Rectangle`, `RoundedRectangle`, `Circle`, `Arrow`, `Line`, `Dot`
+- `SurroundingRectangle(mob, color=ACCENT, buff=0.1, corner_radius=0.15)`
+- `.to_edge(UP)`, `.to_corner(UL)`, `.shift(RIGHT*2)`
+- `.next_to(other, DOWN, buff=0.3)`
+
+### Graphs & Charts
+- `Axes(x_range=[...], y_range=[...], axis_config={...})`
+- `axes.plot(lambda x: x**2, color=ACCENT)`
+- `axes.get_area(graph, x_range=[0,2], color=ACCENT, opacity=0.3)`
+- `BarChart(values=[...], bar_names=[...], y_range=[0,10,2])`
+- `NumberPlane()` for coordinate grid
+
+### Animations
+- `self.play(Create(mob))` — draw shape
+- `self.play(Write(text))` — write text
+- `self.play(FadeIn(mob, shift=UP*0.3))` — directional fade
+- `self.play(FadeOut(mob))`
+- `self.play(Transform(a, b))` — morph a into b
+- `self.play(ReplacementTransform(a, b))` — replace
+- `self.play(Indicate(mob, color=ACCENT))` — flash highlight
+- `self.play(mob.animate.shift(RIGHT))` — animate property
+- `self.play(GrowFromCenter(mob))`
+- `self.play(AnimationGroup(*anims, lag_ratio=0.2))` — stagger
+- `self.wait(seconds)` — pause
+
+### Colors
+- `ManimColor("#hex")` for custom colors
+- Builtin: `WHITE`, `BLUE`, `RED`, `GREEN`, `YELLOW`, `GREY`
+
+## Layout Alignment Rules (CRITICAL)
+
+When creating rows/lists/steps, use **fixed-width containers** for consistent alignment:
+
+```python
+# GOOD: Fixed-width row — all rows are same width, elements at fixed x positions
+ROW_W, ROW_H = 11.0, 1.3
+row_bg = RoundedRectangle(width=ROW_W, height=ROW_H, ...)
+icon.move_to(row_bg.get_left() + RIGHT * 1.0)    # fixed left position
+text.move_to(row_bg.get_center() + RIGHT * 0.8)   # fixed center-right
+
+# BAD: VGroup().arrange(RIGHT) — rows have different widths due to text length
+row = VGroup(icon, text).arrange(RIGHT, buff=0.5)  # width varies!
+```
+
+- Multiple rows → use same `ROW_WIDTH` for all, then `VGroup(*rows).arrange(DOWN)`
+- Glass card → size based on VGroup bounds + padding, `card.move_to(group)`
+- Title → always separate from card, above with `next_to(underline, DOWN, buff=0.55)`
+
+## Example 1: Math formula (single content)
+
+```python
+from manim import *
+
+class ManimSlide(Scene):
+    def construct(self):
+        self.camera.background_color = "#0B0C0E"
+
+        TEXT = ManimColor("#EDEDEF")
+        ACCENT = ManimColor("#7C7FD9")
+        ACCENT_B = ManimColor("#9B9EFF")
+        TEAL = ManimColor("#3CB4B4")
+        MUTED = ManimColor("#9394A1")
+
+        title = Text("Quadratic Formula", font="Pretendard", font_size=48, color=TEXT, weight=ULTRABOLD)
+        title.to_edge(UP, buff=0.55)
+
+        underline = Line(LEFT * 3, RIGHT * 3, stroke_width=3)
+        underline.set_color_by_gradient(ACCENT, TEAL)
+        underline.next_to(title, DOWN, buff=0.15)
+
+        self.play(Write(title), run_time=0.7)
+        self.play(Create(underline), run_time=0.5)
+
+        card = RoundedRectangle(
+            width=11, height=2.5, corner_radius=0.2,
+            fill_color=WHITE, fill_opacity=0.03,
+            stroke_color=WHITE, stroke_opacity=0.06,
+        )
+        card.next_to(underline, DOWN, buff=0.6)
+
+        formula = MathTex(r"x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}", font_size=46, color=TEXT)
+        formula.move_to(card)
+
+        self.play(FadeIn(card), run_time=0.4)
+        self.play(Write(formula), run_time=0.8)
+
+        highlight = SurroundingRectangle(formula, color=ACCENT, buff=0.25, corner_radius=0.15, stroke_width=1.5)
+        self.play(Create(highlight), run_time=0.5)
+
+        self.wait(0.01)  # DURATION_PLACEHOLDER
+```
+
+## Example 2: Step list (multiple rows, fixed-width alignment)
+
+```python
+from manim import *
+
+class ManimSlide(Scene):
+    def construct(self):
+        self.camera.background_color = "#0B0C0E"
+
+        TEXT = ManimColor("#EDEDEF")
+        ACCENT = ManimColor("#7C7FD9")
+        ACCENT_B = ManimColor("#9B9EFF")
+        TEAL = ManimColor("#3CB4B4")
+
+        title = Text("3-Step Process", font="Pretendard", font_size=48, color=TEXT, weight=ULTRABOLD)
+        title.to_edge(UP, buff=0.55)
+        underline = Line(LEFT * 3, RIGHT * 3, stroke_width=3)
+        underline.set_color_by_gradient(ACCENT, TEAL)
+        underline.next_to(title, DOWN, buff=0.15)
+
+        self.play(Write(title), run_time=0.7)
+        self.play(Create(underline), run_time=0.5)
+
+        # Fixed-width rows for alignment
+        ROW_W, ROW_H = 10.0, 1.2
+        steps = [("1", "First step description"), ("2", "Second step"), ("3", "Third step here")]
+        rows = []
+        for num, desc in steps:
+            bg = RoundedRectangle(width=ROW_W, height=ROW_H, corner_radius=0.15,
+                fill_color=WHITE, fill_opacity=0.03, stroke_color=ACCENT, stroke_width=1.5, stroke_opacity=0.5)
+            glow = Circle(radius=0.5, fill_color=ACCENT, fill_opacity=0.18, stroke_width=0)
+            n = Text(num, font="Pretendard", font_size=64, color=ACCENT_B, weight=ULTRABOLD)
+            n.move_to(glow)
+            ng = VGroup(glow, n)
+            ng.move_to(bg.get_left() + RIGHT * 1.0)
+            t = Text(desc, font="Pretendard", font_size=30, color=TEXT, weight=MEDIUM)
+            t.move_to(bg.get_center() + RIGHT * 0.8)
+            rows.append(VGroup(bg, ng, t))
+
+        group = VGroup(*rows).arrange(DOWN, buff=0.35)
+        group.next_to(underline, DOWN, buff=0.55)
+
+        card = RoundedRectangle(width=ROW_W + 0.8, height=group.height + 0.8, corner_radius=0.2,
+            fill_color=WHITE, fill_opacity=0.02, stroke_color=WHITE, stroke_opacity=0.04)
+        card.move_to(group)
+
+        self.play(FadeIn(card, shift=UP * 0.2), run_time=0.5)
+        self.play(AnimationGroup(*[FadeIn(r, shift=UP * 0.2) for r in rows], lag_ratio=0.25), run_time=0.8)
+
+        self.wait(0.01)  # DURATION_PLACEHOLDER
+```
+
+## Common Mistakes to AVOID
+- `arrange(CENTER)` — CENTER is NOT a valid direction. Use `arrange(ORIGIN)` or just stack with `.move_to()`.
+- `VGroup.arrange()` only accepts direction vectors: `UP`, `DOWN`, `LEFT`, `RIGHT`, `ORIGIN`.
+- Do NOT use `buff` as positional argument in `FadeIn(card, run_time=0.45)` — use keyword: `FadeIn(card), run_time=0.45` or `self.play(FadeIn(card), run_time=0.45)`.
+- `color_gradient()` is not a standalone function. Use `mob.set_color_by_gradient(c1, c2)`.
+- Manim `Line` takes point args, not direction constants: `Line(LEFT*3, RIGHT*3)`.
+- `next_to(off_center_element, DOWN)` for wide groups — inherits x-position, clips content off screen. Always add `.set_x(0)` after `next_to()` for groups wider than 6 units.
+
+## IMPORTANT
+- Output ONLY Python code. No explanations, no markdown fences.
+- Keep animations concise (4-8 steps). Snappy run_time (0.5-0.8s each).
+- Korean text uses Text(font="Pretendard", weight=ULTRABOLD|BOLD|MEDIUM), math uses MathTex.
+- NEVER import os, subprocess, or use open(), eval(), exec().
+- ALWAYS use the color palette above. No random colors.
+- Content in upper 2/3 of frame. Bottom 1/3 clear for subtitles.
+- To overlay two objects at same position, use `.move_to()` not `.arrange(CENTER)`.

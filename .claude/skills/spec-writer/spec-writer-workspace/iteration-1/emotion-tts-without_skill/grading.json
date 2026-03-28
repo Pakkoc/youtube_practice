@@ -1,0 +1,47 @@
+{
+  "eval_id": 1,
+  "eval_name": "emotion-tts",
+  "configuration": "without_skill",
+  "expectations": [
+    {
+      "text": "spec.md, plan.md, acceptance.md all exist (exact names, in a specs/ subdirectory)",
+      "passed": false,
+      "evidence": "No specs/ subdirectory exists. Files are in outputs/ with different names: 01-feature-spec.md, 02-implementation-plan.md, 03-affected-files.md, 04-risks-and-decisions.md. None match the required exact names (spec.md, plan.md, acceptance.md)."
+    },
+    {
+      "text": "Uses EARS requirement patterns (keywords: WHEN, THEN, WHILE, ~해야 한다, ~하면 안 된다)",
+      "passed": false,
+      "evidence": "Grep for WHEN, THEN, WHILE, 해야 한다, 하면 안 된다 across all four output files returned zero matches. Requirements are expressed in natural descriptive prose and tables rather than EARS-style structured patterns."
+    },
+    {
+      "text": "Has structured requirement IDs (REQ-01, REQ-N01, REQ-O01, etc.)",
+      "passed": false,
+      "evidence": "Grep for REQ- across all output files returned zero matches. Requirements are organized by section headings (e.g., Decision 1, Risk 1, Step 1.1) but lack formal REQ-style identifiers."
+    },
+    {
+      "text": "Has a table mapping affected FSD layers/slices",
+      "passed": true,
+      "evidence": "01-feature-spec.md section 3.1 contains 'FSD 레이어별 변경 요약' with a table mapping layers (entities, features, shared) to files, change types, and descriptions. 03-affected-files.md also contains per-layer tables and an FSD import dependency diagram."
+    },
+    {
+      "text": "Has LOW/MEDIUM/HIGH risk classification on tasks",
+      "passed": true,
+      "evidence": "04-risks-and-decisions.md uses Korean equivalents in risk headings: Risk 1 (높음/high), Risk 2 (중간/medium), Risks 3-5 (낮음/low). 02-implementation-plan.md also has a difficulty column with 낮음/중간. While not the exact English keywords LOW/MEDIUM/HIGH, the equivalent three-level classification is present."
+    },
+    {
+      "text": "Has at least 2 Given/When/Then scenarios",
+      "passed": false,
+      "evidence": "Grep for Given/When/Then patterns (case-insensitive) returned zero matches across all files. Test plans are described in tabular format (테스트/검증 내용) and code-level assertions, but no formal GWT scenarios exist."
+    },
+    {
+      "text": "Includes lint/test/FSD verification checklist",
+      "passed": true,
+      "evidence": "04-risks-and-decisions.md section 3 has a checklist including: 'ruff check . 통과', 'lint-imports 통과', 'pytest 전체 통과'. 02-implementation-plan.md Phase 5 also lists 'ruff check . && ruff format .', 'npx tsc --noEmit', 'lint-imports' as verification steps."
+    },
+    {
+      "text": "Main body is in Korean, only code identifiers in English",
+      "passed": true,
+      "evidence": "All four files use Korean for headings, descriptions, explanations, and table content. English appears only in code identifiers (Emotion, TTSRequest, split_script), file paths (entities/script/model.py), code blocks, and technical terms (JSON, FSD, enum). Section titles like '개요', '상세 설계', '미결 설계 결정' are all Korean."
+    }
+  ]
+}

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autoresearch — generate-script (CC path)</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8f9fb; color: #1a1a2e; padding: 32px; }
+  h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: #6b7280; font-size: 14px; margin-bottom: 24px; }
+  .status-bar { display: flex; gap: 16px; margin-bottom: 24px; }
+  .stat-card { background: #fff; border-radius: 12px; padding: 16px 20px; flex: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .stat-label { font-size: 12px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; }
+  .stat-value { font-size: 28px; font-weight: 700; margin-top: 4px; }
+  .stat-value.running { color: #6366f1; }
+  .stat-value.complete { color: #10b981; }
+  .chart-container { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); margin-bottom: 24px; }
+  .chart-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; padding: 10px 12px; font-size: 12px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e5e7eb; }
+  td { padding: 10px 12px; font-size: 14px; border-bottom: 1px solid #f3f4f6; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 600; }
+  .badge.baseline { background: #dbeafe; color: #2563eb; }
+  .badge.keep { background: #d1fae5; color: #059669; }
+  .badge.discard { background: #fee2e2; color: #dc2626; }
+  .eval-bar-container { display: flex; align-items: center; gap: 8px; }
+  .eval-bar-bg { flex: 1; height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden; }
+  .eval-bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
+  .eval-bar-fill.high { background: #10b981; }
+  .eval-bar-fill.mid { background: #f59e0b; }
+  .eval-bar-fill.low { background: #ef4444; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+  @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } .status-bar { flex-wrap: wrap; } }
+</style>
+</head>
+<body>
+
+<h1>Autoresearch: generate-script (CC path)</h1>
+<p class="subtitle">CC shorts script optimization — <span id="status-text">Initializing...</span></p>
+
+<div class="status-bar">
+  <div class="stat-card">
+    <div class="stat-label">Current Experiment</div>
+    <div class="stat-value" id="current-exp">—</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Baseline Score</div>
+    <div class="stat-value" id="baseline-score">—</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Best Score</div>
+    <div class="stat-value" id="best-score">—</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Improvement</div>
+    <div class="stat-value" id="improvement">—</div>
+  </div>
+</div>
+
+<div class="chart-container">
+  <div class="chart-title">Score Progression</div>
+  <canvas id="scoreChart" height="80"></canvas>
+</div>
+
+<div class="two-col">
+  <div class="chart-container">
+    <div class="chart-title">Per-Eval Breakdown</div>
+    <div id="eval-breakdown"></div>
+  </div>
+  <div class="chart-container">
+    <div class="chart-title">Experiment Log</div>
+    <table>
+      <thead><tr><th>#</th><th>Score</th><th>Rate</th><th>Status</th><th>Description</th></tr></thead>
+      <tbody id="exp-table"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+let chart = null;
+
+async function fetchData() {
+  try {
+    const res = await fetch('results.json?t=' + Date.now());
+    return await res.json();
+  } catch(e) { return null; }
+}
+
+function renderEvalBreakdown(evals) {
+  const container = document.getElementById('eval-breakdown');
+  container.innerHTML = evals.map(ev => {
+    const pct = ev.total > 0 ? Math.round(ev.pass_count / ev.total * 100) : 0;
+    const cls = pct >= 80 ? 'high' : pct >= 50 ? 'mid' : 'low';
+    return `<div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
+        <span>${ev.name}</span><span style="color:#6b7280">${ev.pass_count}/${ev.total} (${pct}%)</span>
+      </div>
+      <div class="eval-bar-container">
+        <div class="eval-bar-bg"><div class="eval-bar-fill ${cls}" style="width:${pct}%"></div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderTable(experiments) {
+  const tbody = document.getElementById('exp-table');
+  tbody.innerHTML = experiments.map(exp => `<tr>
+    <td>${exp.id}</td>
+    <td>${exp.score}/${exp.max_score}</td>
+    <td>${exp.pass_rate.toFixed(1)}%</td>
+    <td><span class="badge ${exp.status}">${exp.status}</span></td>
+    <td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${exp.description}">${exp.description}</td>
+  </tr>`).join('');
+}
+
+function renderChart(experiments) {
+  const ctx = document.getElementById('scoreChart').getContext('2d');
+  const labels = experiments.map(e => 'Exp ' + e.id);
+  const data = experiments.map(e => e.pass_rate);
+  const colors = experiments.map(e => e.status === 'baseline' ? '#6366f1' : e.status === 'keep' ? '#10b981' : '#ef4444');
+
+  if (chart) chart.destroy();
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Pass Rate %',
+        data,
+        borderColor: '#6366f1',
+        backgroundColor: 'rgba(99,102,241,0.1)',
+        fill: true,
+        tension: 0.3,
+        pointBackgroundColor: colors,
+        pointRadius: 6,
+        pointHoverRadius: 8,
+      }]
+    },
+    options: {
+      scales: {
+        y: { min: 0, max: 100, ticks: { callback: v => v + '%' } }
+      },
+      plugins: { legend: { display: false } }
+    }
+  });
+}
+
+async function update() {
+  const data = await fetchData();
+  if (!data) return;
+
+  document.getElementById('status-text').textContent = data.status === 'running'
+    ? `Running experiment ${data.current_experiment}...`
+    : 'Complete';
+  document.getElementById('current-exp').textContent = data.current_experiment;
+  document.getElementById('current-exp').className = 'stat-value ' + data.status;
+  document.getElementById('baseline-score').textContent = data.baseline_score !== null ? data.baseline_score + '%' : '—';
+  document.getElementById('best-score').textContent = data.best_score !== null ? data.best_score + '%' : '—';
+
+  if (data.baseline_score !== null && data.best_score !== null) {
+    const imp = (data.best_score - data.baseline_score).toFixed(1);
+    document.getElementById('improvement').textContent = (imp > 0 ? '+' : '') + imp + '%';
+    document.getElementById('improvement').style.color = imp > 0 ? '#10b981' : '#6b7280';
+  }
+
+  if (data.experiments.length > 0) {
+    renderChart(data.experiments);
+    renderTable(data.experiments);
+  }
+  if (data.eval_breakdown) renderEvalBreakdown(data.eval_breakdown);
+}
+
+update();
+setInterval(update, 10000);
+</script>
+</body>
+</html>
