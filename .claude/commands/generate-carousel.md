@@ -19,16 +19,18 @@ Each card gets one `.tsx` file that will be rendered to a static `.png` by `remo
 **Before generating any card**, read these two files:
 
 1. `prompts/channel_identity.txt` — 페르소나 규칙 (샘호트만 ≠ Sam Altman)
-2. `config/config.base.yaml` → `carousel.branding` 섹션:
-   - **brand_name**: 어트리뷰션에 사용
-   - **brand_voice**: 모든 카드 텍스트의 톤 기준 (예: "친근하지만 전문적, 개조식, 핵심만")
-   - **target_audience**: 콘텐츠 난이도/용어 수준 결정 기준
-3. `config/config.base.yaml` → `carousel.background.enabled`:
+2. 설정 파일 우선순위로 시도:
+   - `config/config.base.yaml` → 없으면 `config/config.api.yaml`
+   - `carousel.branding` 섹션이 없을 수 있음 → **아래 기본값 사용**:
+     - **brand_name**: `@ai.sam_hottman`
+     - **brand_voice**: 친근하지만 전문적, 개조식, 핵심만
+     - **target_audience**: AI 입문~중급, 비개발자 포함
+3. `carousel.background.enabled`:
    - **`true`**: AI 배경 이미지 ON → Step 3.5에서 NanoBanana로 생성, TSX에 반영
-   - **`false`** (기본값): AI 배경 이미지 OFF → Step 3.5 스킵, 순수 TSX만
+   - **`false`** 또는 키 없음 (기본값): AI 배경 이미지 OFF → Step 3.5 스킵, 순수 TSX만
 
 **적용 규칙:**
-- CTA 카드의 핸들 → `brand_name` 값 사용 (하드코딩 금지)
+- CTA 카드의 핸들 → `brand_name` 값 사용 (기본: `@ai.sam_hottman`)
 - 카드 텍스트 톤 → `brand_voice`에 맞춰 작성
 - 전문 용어 수준 → `target_audience`에 맞게 조절 (너무 쉽거나 어렵지 않게)
 
@@ -192,6 +194,14 @@ Write each card as `projects/$PROJECT/carousel/card_NNN.tsx` (001, 002, ...).
 uv run python scripts/validate_carousel.py $PROJECT
 ```
 
+> **⚠️ 워크샵 환경**: `scripts/validate_carousel.py`가 없을 수 있음.
+> 스크립트가 없으면 이 단계를 **스킵하고 5b로 직행**.
+> 수동 체크리스트:
+> - [ ] 모든 카드에 `useFonts()` 호출 있음
+> - [ ] 모든 카드 `PageDots`가 root AbsoluteFill 마지막 자식
+> - [ ] `useCurrentFrame`, `spring`, `interpolate` 없음 (정적 카드)
+> - [ ] `flexDirection: "column"` + `justifyContent: "center"` 로 수직 중앙 정렬
+
 - **CRITICAL** → 즉시 수정 후 재실행
 - **WARNING만** → 필요시 수정
 - 모든 CRITICAL 해소 후 5b로
@@ -220,6 +230,11 @@ uv run python scripts/regenerate_carousel.py $PROJECT           # All
 uv run python scripts/regenerate_carousel.py $PROJECT 1 3 5     # Specific
 uv run python scripts/regenerate_carousel.py $PROJECT --force    # Force re-render
 ```
+
+> **⚠️ 워크샵 환경**: `scripts/regenerate_carousel.py`가 없으면 직접 생성할 것.
+> 스크립트 역할: 카드별 TSX → FreeformCard.tsx 복사 → props JSON 파일 생성 → `npx remotion still` 실행 → 원본 복구.
+> **Windows 주의**: subprocess에서 `shell=True` 필수, `--props`는 반드시 temp JSON 파일 경로로 전달 (인라인 JSON 이스케이핑 실패).
+> 참조 구현: `scripts/regenerate_carousel.py` (세션 중 생성됨)
 
 **CRITICAL:**
 - NEVER run `npx remotion still` directly — the Python script handles props, paths, restoration
